@@ -10,8 +10,9 @@ function gameApp() {
     async init() {
       console.log("Initializing Nexus Games...");
       try {
-        // Fetch from root (Vite serves public/games.json at /games.json)
-        const response = await fetch('./games.json');
+        // Use a relative path that works on both local dev and GitHub Pages subpaths.
+        // We fetch 'games.json' relative to the current location.
+        const response = await fetch('games.json');
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         this.allGames = await response.json();
         
