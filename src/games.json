@@ -1,0 +1,66 @@
+[
+  {
+    "id": "2048",
+    "title": "2048",
+    "description": "Join the numbers and get to the 2048 tile!",
+    "iframeUrl": "https://play2048.co/",
+    "category": "Puzzle",
+    "thumbnail": "https://images.unsplash.com/photo-1550741111-3d5d7140af0a?q=80&w=400&h=400&auto=format&fit=crop"
+  },
+  {
+    "id": "tetris",
+    "title": "Tetris",
+    "description": "The classic block-stacking puzzle game.",
+    "iframeUrl": "https://tetris.com/play-tetris",
+    "category": "Classic",
+    "thumbnail": "https://images.unsplash.com/photo-1605398401383-401736603a11?q=80&w=400&h=400&auto=format&fit=crop"
+  },
+  {
+    "id": "snake",
+    "title": "Google Snake",
+    "description": "The timeless arcade classic.",
+    "iframeUrl": "https://www.google.com/search?q=play+snake&igu=1",
+    "category": "Arcade",
+    "thumbnail": "https://images.unsplash.com/photo-1551103782-8ab07afd45c1?q=80&w=400&h=400&auto=format&fit=crop"
+  },
+  {
+    "id": "pacman",
+    "title": "Pac-Man Doodle",
+    "description": "Play the original Google Pac-Man doodle.",
+    "iframeUrl": "https://www.google.com/logos/2010/pacman10-i.html",
+    "category": "Arcade",
+    "thumbnail": "https://images.unsplash.com/photo-1579373903781-fd5c0c30c4cd?q=80&w=400&h=400&auto=format&fit=crop"
+  },
+  {
+    "id": "minesweeper",
+    "title": "Minesweeper",
+    "description": "Clear the board without hitting any mines.",
+    "iframeUrl": "https://www.google.com/logos/2010/pacman10-i.html",
+    "category": "Classic",
+    "thumbnail": "https://images.unsplash.com/photo-1549466600-60721200388d?q=80&w=400&h=400&auto=format&fit=crop"
+  },
+  {
+    "id": "flappybird",
+    "title": "Flappy Bird",
+    "description": "Fly through the pipes without crashing.",
+    "iframeUrl": "https://flappybird.io/",
+    "category": "Arcade",
+    "thumbnail": "https://images.unsplash.com/photo-1550741111-3d5d7140af0a?q=80&w=400&h=400&auto=format&fit=crop"
+  },
+  {
+    "id": "solitaire",
+    "title": "Google Solitaire",
+    "description": "The classic card game.",
+    "iframeUrl": "https://www.google.com/search?q=play+solitaire&igu=1",
+    "category": "Classic",
+    "thumbnail": "https://images.unsplash.com/photo-1582234389022-7772667f339f?q=80&w=400&h=400&auto=format&fit=crop"
+  },
+  {
+    "id": "chess",
+    "title": "Lichess",
+    "description": "Play chess against the computer or friends.",
+    "iframeUrl": "https://lichess.org/export",
+    "category": "Strategy",
+    "thumbnail": "https://images.unsplash.com/photo-1528819622765-d6bcf132f793?q=80&w=400&h=400&auto=format&fit=crop"
+  }
+]
