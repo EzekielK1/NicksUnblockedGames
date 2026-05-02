@@ -1,13 +1,293 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus Unblocked Games</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              primary: '#00ff88',
+              secondary: '#00d4ff',
+            },
+            bg: {
+              dark: '#0a0b10',
+            },
+            card: {
+              bg: '#161822',
+            }
+          },
+          fontFamily: {
+            sans: ['Space Grotesk', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
 
+  <style type="text/css">
+    body {
+      background-color: #0a0b10;
+      color: #f1f5f9;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .glass-panel {
+      background-color: rgba(22, 24, 34, 0.8);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .neon-glow:hover {
+      box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+    }
+    [x-cloak] { display: none !important; }
+    
+    @keyframes pulse-soft {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+    .pulse {
+      animation: pulse-soft 3s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body x-data="gameApp()" x-init="init()">
+  <div class="min-h-screen bg-bg-dark flex flex-col">
+    <!-- Header -->
+    <header class="sticky top-0 z-40 bg-bg-dark/80 backdrop-blur-lg border-b border-white/5 py-4 px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3 group cursor-pointer" @click="resetFilters()">
+        <div class="p-2 bg-brand-primary/10 rounded-lg group-hover:bg-brand-primary/20 transition-colors">
+          <i data-lucide="gamepad-2" class="w-8 h-8 text-brand-primary"></i>
+        </div>
+        <div>
+          <h1 class="text-2xl font-bold tracking-tight text-white uppercase italic">Nexus<span class="text-brand-primary">Games</span></h1>
+          <p class="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500">Unblocked v1.0.5</p>
+        </div>
+      </div>
+
+      <div class="relative w-full md:w-96">
+        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
+        <input
+          type="text"
+          placeholder="Search for a game..."
+          class="w-full bg-white/5 border border-white/10 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary/40 transition-all placeholder:text-slate-600 text-white"
+          x-model="searchQuery"
+        >
+      </div>
+    </header>
+
+    <!-- UI Content -->
+    <main class="flex-1 max-w-7xl mx-auto w-full px-6 py-8">
+      <!-- Categories -->
+      <section class="mb-12">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-2">
+            <i data-lucide="filter" class="w-4 h-4 text-brand-primary"></i>
+            <h2 class="text-sm font-bold uppercase tracking-widest text-slate-400">Categories</h2>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <template x-for="cat in categories" :key="cat">
+            <button
+              @click="activeCategory = cat"
+              class="px-4 py-1.5 rounded-full text-sm font-medium transition-all"
+              :class="activeCategory === cat ? 'bg-brand-primary text-bg-dark' : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white'"
+              x-text="cat"
+            ></button>
+          </template>
+        </div>
+      </section>
+
+      <!-- Game Grid -->
+      <section>
+        <div class="flex items-center gap-2 mb-6">
+          <i data-lucide="trending-up" class="w-4 h-4 text-brand-secondary"></i>
+          <h2 class="text-sm font-bold uppercase tracking-widest text-slate-400" x-text="searchQuery ? 'Search Results' : 'Featured Games'"></h2>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" x-show="filteredGames.length > 0">
+          <template x-for="game in filteredGames" :key="game.id">
+            <div class="group relative">
+              <div 
+                @click="openGame(game)"
+                class="glass-panel overflow-hidden rounded-2xl cursor-pointer neon-glow transition-all duration-300 transform hover:-translate-y-1 active:scale-[0.98]"
+              >
+                <div class="aspect-video relative overflow-hidden bg-slate-800">
+                  <img 
+                    :src="game.thumbnail || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=400&h=225&auto=format&fit=crop'"
+                    alt=""
+                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-80 group-hover:opacity-100"
+                  >
+                  <div class="absolute inset-0 bg-gradient-to-t from-bg-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                    <div class="bg-brand-primary text-bg-dark p-2 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                      <i data-lucide="maximize-2" class="w-5 h-5"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="p-4">
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="text-[10px] font-mono text-brand-primary uppercase tracking-widest" x-text="game.category"></span>
+                  </div>
+                  <h3 class="font-bold text-lg group-hover:text-brand-primary transition-colors" x-text="game.title"></h3>
+                  <p class="text-sm text-slate-400 line-clamp-2 mt-1" x-text="game.description"></p>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- No Results -->
+        <div class="py-20 text-center" x-show="filteredGames.length === 0">
+          <div class="inline-block p-4 bg-white/5 rounded-full mb-4">
+            <i data-lucide="gamepad-2" class="w-12 h-12 text-slate-600"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-400">No games matched your search.</h3>
+          <button @click="resetFilters()" class="mt-4 text-brand-primary hover:underline underline-offset-4">
+            Clear all filters
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-12 px-6 mt-20 bg-card-bg/20">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+        <div>
+           <h2 class="text-xl font-bold tracking-tight text-white uppercase italic">Nexus<span class="text-brand-primary">Games</span></h2>
+           <p class="text-sm text-slate-500 mt-2 max-w-xs">A modern gateway for unblocked gaming. Play your favorite titles anywhere, anytime.</p>
+        </div>
+        <div class="flex gap-12 font-mono text-xs uppercase tracking-widest text-slate-500 text-right">
+          <div>
+            <p class="mb-4 text-slate-300">Infrastructure</p>
+            <ul class="space-y-2">
+              <li>Alpine.js Engine</li>
+              <li>Static CDN</li>
+              <li>Iframe Portal</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Modal -->
+    <div 
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-bg-dark/95 backdrop-blur-xl"
+      x-show="selectedGame"
+      x-transition
+      x-cloak
+      @keydown.escape.window="closeGame()"
+    >
+      <div 
+        class="w-full max-w-6xl h-full flex flex-col glass-panel rounded-3xl overflow-hidden relative shadow-2xl"
+        @click.away="closeGame()"
+      >
+        <template x-if="selectedGame">
+          <div class="flex flex-col h-full">
+            <div class="p-4 md:p-6 border-b border-white/10 flex items-center justify-between bg-bg-dark/50">
+              <div class="flex items-center gap-4">
+                <div class="p-2 bg-brand-primary/10 rounded-lg">
+                  <i data-lucide="gamepad-2" class="w-6 h-6 text-brand-primary"></i>
+                </div>
+                <div>
+                  <h2 class="text-xl font-bold italic uppercase text-white" x-text="selectedGame.title"></h2>
+                  <p class="text-xs text-slate-400 uppercase tracking-widest font-mono"><span x-text="selectedGame.category"></span> // Session Active</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <button @click="window.open(selectedGame.iframeUrl, '_blank')" class="p-2 hover:bg-white/10 rounded-full transition-colors text-slate-400 hover:text-white">
+                  <i data-lucide="external-link" class="w-5 h-5"></i>
+                </button>
+                <button @click="closeGame()" class="p-2 hover:bg-red-500/20 hover:text-red-500 rounded-full transition-colors text-slate-400">
+                  <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+              </div>
+            </div>
+            <div class="flex-1 bg-black relative">
+              <iframe :src="selectedGame.iframeUrl" class="w-full h-full border-none" x-ref="gameFrame"></iframe>
+            </div>
+            <div class="p-4 px-8 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-slate-500 uppercase tracking-widest">
+              <div class="flex gap-6">
+                <span>VANILLA_ENGINE_V2_ACTIVE</span>
+                <span class="hidden md:inline">GITHUB_PAGES_COMPATIBLE</span>
+              </div>
+              <div class="flex items-center gap-2 text-brand-primary">
+                <div class="w-1.5 h-1.5 rounded-full bg-brand-primary pulse"></div>
+                <span>NODE_SYNC_OK</span>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function gameApp() {
+      return {
+        allGames: [],
+        searchQuery: '',
+        activeCategory: 'All',
+        selectedGame: null,
+        categories: ['All'],
+        
+        async init() {
+          try {
+            const response = await fetch('./src/games.json');
+            this.allGames = await response.json();
+            
+            // Extract categories
+            const cats = new Set(this.allGames.map(g => g.category));
+            this.categories = ['All', ...Array.from(cats)].sort();
+            
+            this.$nextTick(() => lucide.createIcons());
+          } catch (e) {
+            console.error("Failed to load games:", e);
+          }
+          
+          this.$watch('searchQuery', () => this.refreshIcons());
+          this.$watch('activeCategory', () => this.refreshIcons());
+        },
+        
+        get filteredGames() {
+          return this.allGames.filter(game => {
+            const matchesSearch = game.title.toLowerCase().includes(this.searchQuery.toLowerCase()) || 
+                                game.description.toLowerCase().includes(this.searchQuery.toLowerCase());
+            const matchesCategory = this.activeCategory === 'All' || game.category === this.activeCategory;
+            return matchesSearch && matchesCategory;
+          });
+        },
+        
+        openGame(game) {
+          this.selectedGame = game;
+          this.$nextTick(() => lucide.createIcons());
+        },
+        
+        closeGame() {
+          this.selectedGame = null;
+        },
+        
+        resetFilters() {
+          this.searchQuery = '';
+          this.activeCategory = 'All';
+        },
+        
+        refreshIcons() {
+          this.$nextTick(() => lucide.createIcons());
+        }
+      }
+    }
+  </script>
+</body>
+</html>
