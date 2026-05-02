@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nexus Unblocked Games</title>
+  <title>NicksUnblockedGames</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Alpine.js -->
@@ -72,8 +72,8 @@
           <i data-lucide="gamepad-2" class="w-8 h-8 text-brand-primary"></i>
         </div>
         <div>
-          <h1 class="text-2xl font-bold tracking-tight text-white uppercase italic">Nexus<span class="text-brand-primary">Games</span></h1>
-          <p class="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500">Unblocked v1.0.5</p>
+          <h1 class="text-2xl font-bold tracking-tight text-white uppercase italic">Nicks<span class="text-brand-primary">UnblockedGames</span></h1>
+          <p class="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500">Unblocked v1.0</p>
         </div>
       </div>
 
@@ -165,7 +165,7 @@
     <footer class="border-t border-white/5 py-12 px-6 mt-20 bg-card-bg/20">
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
         <div>
-           <h2 class="text-xl font-bold tracking-tight text-white uppercase italic">Nexus<span class="text-brand-primary">Games</span></h2>
+           <h2 class="text-xl font-bold tracking-tight text-white uppercase italic">Nicks<span class="text-brand-primary">UnblockedGames</span></h2>
            <p class="text-sm text-slate-500 mt-2 max-w-xs">A modern gateway for unblocked gaming. Play your favorite titles anywhere, anytime.</p>
         </div>
         <div class="flex gap-12 font-mono text-xs uppercase tracking-widest text-slate-500 text-right">
@@ -192,6 +192,7 @@
       <div 
         class="w-full max-w-6xl h-full flex flex-col glass-panel rounded-3xl overflow-hidden relative shadow-2xl"
         @click.away="closeGame()"
+        x-ref="gameContainer"
       >
         <template x-if="selectedGame">
           <div class="flex flex-col h-full">
@@ -206,7 +207,10 @@
                 </div>
               </div>
               <div class="flex items-center gap-2">
-                <button @click="window.open(selectedGame.iframeUrl, '_blank')" class="p-2 hover:bg-white/10 rounded-full transition-colors text-slate-400 hover:text-white">
+                <button @click="toggleFullscreen()" class="p-2 hover:bg-white/10 rounded-full transition-colors text-slate-400 hover:text-white" title="Toggle Fullscreen">
+                  <i data-lucide="maximize" class="w-5 h-5"></i>
+                </button>
+                <button @click="window.open(selectedGame.iframeUrl, '_blank')" class="p-2 hover:bg-white/10 rounded-full transition-colors text-slate-400 hover:text-white" title="Open in New Tab">
                   <i data-lucide="external-link" class="w-5 h-5"></i>
                 </button>
                 <button @click="closeGame()" class="p-2 hover:bg-red-500/20 hover:text-red-500 rounded-full transition-colors text-slate-400">

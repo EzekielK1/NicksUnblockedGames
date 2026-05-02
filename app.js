@@ -8,7 +8,7 @@ function gameApp() {
     categories: ['All'],
     
     async init() {
-      console.log("Initializing Nexus Games...");
+      console.log("Initializing NicksUnblockedGames...");
       try {
         // Use a relative path that works on both local dev and GitHub Pages subpaths.
         // We fetch 'games.json' relative to the current location.
@@ -51,6 +51,19 @@ function gameApp() {
       if (!game.iframeUrl) return;
       this.selectedGame = game;
       this.refreshIcons();
+    },
+    
+    toggleFullscreen() {
+      const container = this.$refs.gameContainer;
+      if (!container) return;
+
+      if (!document.fullscreenElement) {
+        container.requestFullscreen().catch(err => {
+          console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
     },
     
     closeGame() {
