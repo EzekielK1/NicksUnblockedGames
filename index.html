@@ -244,7 +244,9 @@
         
         async init() {
           try {
-            const response = await fetch('./src/games.json');
+            // Fetch from root (Vite serves public/games.json at /games.json)
+            const response = await fetch('games.json');
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             this.allGames = await response.json();
             
             // Extract categories
@@ -254,6 +256,14 @@
             this.$nextTick(() => lucide.createIcons());
           } catch (e) {
             console.error("Failed to load games:", e);
+            // Fallback sample game if fetch fails
+            this.allGames = [{
+              id: 'error',
+              title: 'Data Load Error',
+              description: 'Could not load games.json. Please check if the file exists at the root.',
+              iframeUrl: '',
+              category: 'Error'
+            }];
           }
           
           this.$watch('searchQuery', () => this.refreshIcons());
